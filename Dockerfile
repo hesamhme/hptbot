@@ -10,5 +10,7 @@ COPY . .
 
 # Set environment variables (dotenv will load from .env)
 ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app
+
 
 CMD ["python", "main.py"]
