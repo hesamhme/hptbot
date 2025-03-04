@@ -16,6 +16,7 @@ class UserProfile(Base):
     telegram_id = Column(Integer, nullable=False) # user key
     social_media = Column(Enum(SocialMediaType), nullable=False)   
     username = Column(String, nullable=False)  # username in social media
+    alert_threshold = Column(Integer, nullable=True)
 
     __table_args__ = (UniqueConstraint("telegram_id", "social_media", name="unique_user_social"),)
 
