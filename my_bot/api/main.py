@@ -24,7 +24,9 @@ def set_alert(data: Profile, db: Session = Depends(get_db)):
     if not profile:
         raise HTTPException(status_code=404, detail="User not found")
 
+    
     profile.alert_threshold = data.target
+    db.add(profile)
     db.commit()
     db.refresh(profile)  # Ensure the profile is refreshed after commit
     return {"message": f"🚨 Alert set for {data.username} at {data.target} followers!"}
