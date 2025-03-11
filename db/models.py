@@ -13,11 +13,10 @@ class UserProfile(Base):
     __tablename__ = "user_profiles"
 
     id = Column(Integer, primary_key=True, index=True)
-    telegram_id = Column(Integer, nullable=False)  # user key
+    telegram_id = Column(Integer, nullable=False) # user key
     social_media = Column(Enum(SocialMediaType), nullable=False)   
     username = Column(String, nullable=False)  # username in social media
     alert_threshold = Column(Integer, nullable=True)
-    followers_count = Column(Integer, nullable=False, default=0)  # Add this line
 
     __table_args__ = (UniqueConstraint("telegram_id", "social_media", name="unique_user_social"),)
 

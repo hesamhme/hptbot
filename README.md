@@ -25,7 +25,7 @@ This a simple social media monitor.
    git clone https://github.com/hesamhme/hptbot
    cd hptbot
    ```
-2. create a ```.env``` file and paste the given values
+2. reate a ```.env``` file and paste the given values
 
 3. build and run application using Docker Compose:
 

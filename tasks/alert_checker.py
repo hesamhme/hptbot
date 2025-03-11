@@ -3,6 +3,7 @@ from db.database import DatabaseManager
 from bot.main import logger
 from telegram import Bot
 from config import config
+from db.fake_db import fake_db
 from db.models import UserProfile
 
 db = DatabaseManager()
@@ -22,13 +23,13 @@ def check_alerts():
         profiles = db.db.query(UserProfile).filter(UserProfile.alert_threshold.isnot(None)).all()
         
         for profile in profiles:
-            current_followers = profile.followers_count
+            current_followers = fake_db.get(profile.username, {}).get("followers_count", 0)
             logger.info(f"Checking profile {profile.username} with {current_followers} followers...")
 
             if current_followers >= profile.alert_threshold:
                 send_telegram_message(profile.telegram_id, f"🎉 {profile.username} has reached the target of {profile.alert_threshold} followers!")
                 profile.alert_threshold = None  
                 db.db.commit()
-                db.db.expire(profile)  # Ensure the profile is refreshed after commit
+                db.db.expire(profile)  
 
         time.sleep(60)

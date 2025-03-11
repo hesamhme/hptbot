@@ -2,8 +2,8 @@ import random
 import time
 import logging
 from threading import Thread
+from db.fake_db import fake_db
 from db.database import DatabaseManager
-from db.models import UserProfile
 from telegram import Bot
 from config import config
 from tasks.alert_checker import check_alerts
@@ -17,14 +17,12 @@ bot = Bot(token=config.BOT_TOKEN)
 def increase_followers():
     logger.info("Starting the increase_followers task...")
     while True:
-        profiles = db.db.query(UserProfile).all()
-        for profile in profiles:
-            old_count = profile.followers_count
+        for user, data in fake_db.items():
+            old_count = data["followers_count"]
             increment = random.randint(50, 200)
-            profile.followers_count += increment
-            new_count = profile.followers_count
-            logger.info(f"📈 {profile.username} followers increased from {old_count} to {new_count} (+{increment})")
-        db.db.commit()
+            data["followers_count"] += increment
+            new_count = data["followers_count"]
+            logger.info(f"📈 {user} followers increased from {old_count} to {new_count} (+{increment})")
         time.sleep(10)
 
 def start_increase_followers():

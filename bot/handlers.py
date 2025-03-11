@@ -1,7 +1,7 @@
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import CallbackContext, MessageHandler, filters
 from db.database import DatabaseManager
-from db.models import SocialMediaType, UserProfile
+from db.models import SocialMediaType
 from db.fake_db import fake_db  # Ensure correct import
 import random
 
@@ -79,13 +79,6 @@ async def save_alert(update: Update, context: CallbackContext):
         if username in fake_db:
             fake_db[username]["target"] = target
             
-            # Update the alert threshold in the database
-            profile = db.get_user_by_username(username)
-            if profile:
-                profile.alert_threshold = target
-                db.db.commit()
-                db.db.refresh(profile)
-
             keyboard = [
                 [InlineKeyboardButton("👥 Check Followers", callback_data=f"check_followers_{username}")],
                 [InlineKeyboardButton("🔔 Set Alert", callback_data=f"set_alert_{username}")]
